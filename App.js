@@ -25,7 +25,9 @@ export default class App extends Component {
 	}
 
 	_getWeather = (lat, lon) => {
-		fetch('http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}')
+		fetch(
+			`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+		)
 			.then(response => response.json())
 			.then(json => {
 				console.log(json);
@@ -38,13 +40,15 @@ export default class App extends Component {
 	};
 
   render() {
-		const { isLoaded, error } = this.state;
+		const { isLoaded, error, temperature, name } = this.state;
     return (
       <View style={styles.container}>
 				<StatusBar hidden={true} />
-				{ isLoaded ? <Weather/> : (
+				{ isLoaded ? (
+					<Weather weatherName={name} temp={Math.floor(temperature - 273.15)}/>
+				) : (
 					<View style={ styles.loading }>
-						<Text style={ styles.loadingText }>Getting the fucking weather</Text>
+						<Text style={ styles.loadingText }>Getting the nice weather</Text>
 						{error ? <Text style={styles.errorText}>{error}</Text> : null}
 					</View>
 				)}
